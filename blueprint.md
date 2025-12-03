@@ -1,61 +1,96 @@
+# پروژه Divar Ad-App: مستند جامع و نقشه راه
 
-# Blueprint: Divar Ad App (PWA) - "Project Genesis"
-
-## 1. Project Overview
-
-A modern, performant, and visually stunning Progressive Web App (PWA) for browsing and posting ads, inspired by the best features of Divar and Sheypoor. The application is being rebuilt from the ground up under "Project Genesis" to feature a multi-page architecture and a highly polished, professional user interface.
-
-**Core Mandate:** To not just replicate the provided UI mockups, but to elevate them into a more beautiful, modern, fluid, and complete user experience.
+این مستند، منبع حقیقت واحد (Single Source of Truth) برای پروژه اپلیکیشن آگهی ما است. هدف آن، شفاف‌سازی چشم‌انداز، معماری، تکنولوژی‌ها و نقشه راه توسعه از ابتدا تا انتها است.
 
 ---
 
-## 2. Design Philosophy: "Genesis Azure" Theme
+## ۱. چشم‌انداز و هدف اصلی (Vision & Goal)
 
-- **Theme**: A sophisticated, ultra-dark, yet clean and minimal theme. It uses a `metal-darkest` (#0D0E12) base for a deep, immersive experience.
-- **Accent Color**: A vibrant, modern **Azure Blue** is used as the primary accent color for interactive elements, highlights, and branding, giving a sharp, technological, and premium feel.
-- **Atmosphere**: Professional, clean, and intuitive. The focus is on excellent typography, generous spacing, and smooth, subtle animations.
-- **UI Metaphor**: A blend of flat design principles with depth created through careful use of shadows and layering, ensuring a modern and uncluttered interface.
+**هدف اصلی:** ساخت یک پلتفرم ثبت آگهی مدرن، سریع، قابل اعتماد و کاربرپسند، با الهام از بهترین ویژگی‌های پلتفرم «دیوار». این اپلیکیشن باید یک تجربه کاربری روان در وب ارائه دهد و زیرساخت آن به گونه‌ای طراحی شود که در آینده به راحتی قابل توسعه (Scalable) برای ویژگی‌های جدید و کاربران بیشتر باشد.
 
 ---
 
-## 3. Application Architecture (Multi-Page SPA)
+## ۲. معماری و پشته فناوری (Architecture & Tech Stack)
 
-The application will be structured as a Single Page Application with multiple, distinct pages managed by Nuxt's file-based routing.
+ما از یک معماری **میکروسرویس-گرا** با دو بخش کاملاً مجزا استفاده می‌کنیم:
 
-### Page Structure:
-- **`pages/index.vue` (Home):** The main landing page. It will feature the search bar, a grid of categories, and a list of recent or featured ads.
-- **`pages/new.vue` (Submit Ad):** A dedicated page containing a form for users to create and submit new advertisements.
-- **`pages/chat.vue` (Messages):** A page to display a list of user conversations. Will initially be built with a skeleton loader.
-- **`pages/account.vue` (My Account):** A user profile page with a menu for accessing personal ads, settings, and other account-related information.
+### ✅ فرانت‌اند (Frontend)
+- **زبان:** TypeScript
+- **فریم‌ورک:** Vue.js 3
+- **سینتکس:** Composition API با `<script setup>`
+- **ابزار ساخت (Build Tool):** Vite
+- **استایل‌دهی:** Tailwind CSS برای Utility-First CSS
+- **کتابخانه درخواست HTTP:** Axios (برای ارتباط با بک‌اند)
 
-### Global Components:
-- **`components/BottomNav.vue`:** A full-width, fixed navigation bar providing access to the main pages of the app.
-- **`components/AppHeader.vue`:** A clean header, likely contextual based on the current page.
-- **Modals:** Reusable modal components for actions like Login/Authentication and City Selection.
+### ✅ بک‌اند (Backend)
+- **زبان:** Go (Golang)
+- **فریم‌ورک وب:** Gin
+- **ویژگی کلیدی:** سرعت بسیار بالا، کامپایل شدن به یک فایل باینری واحد، مدیریت بهینه همزمانی (Concurrency).
+
+### ⏳ پایگاه داده (Database) - *در فاز بعدی تصمیم‌گیری می‌شود*
+- **گزینه ۱ (پیشنهادی):** **PostgreSQL** - یک پایگاه داده رابطه‌ای قدرتمند و متن-باز که با Go به خوبی کار می‌کند.
+- **گزینه ۲:** **Cloud Firestore** - یک پایگاه داده NoSQL از Firebase که برای ویژگی‌های real-time و همگام‌سازی زنده عالی است.
+
+### ✅ محیط توسعه و استقرار (Dev & Ops)
+- **محیط توسعه:** Firebase Studio (Project IDX)
+- **پیکربندی محیط:** Nix (`dev.nix`) برای تعریف ابزارها و بسته‌های لازم به صورت کد.
+- **Live Reloading:**
+  - **فرانت‌اند:** توسط Vite
+  - **بک‌اند:** توسط ابزار `air`
+- **کانتینرسازی (در آینده):** Docker
+- **استقرار (در آینده):**
+  - **فرانت‌اند:** Firebase Hosting
+  - **بک‌اند:** Google Cloud Run
 
 ---
 
-## 4. Current Task: Genesis - Phase 1 (Foundation & Structure)
+## ۳. استراتژی توسعه (Development Strategy)
 
-**Objective:** To lay the foundational structure for the new multi-page application based on the user-provided images and the "Genesis" plan.
+- **API-First:** ابتدا APIهای بک‌اند را طراحی و پیاده‌سازی می‌کنیم، سپس فرانت‌اند را به آن متصل می‌کنیم.
+- **جداسازی کامل:** منطق فرانت‌اند و بک‌اند کاملاً از هم جدا هستند. این کار نگهداری و توسعه موازی را آسان می‌کند.
+- **محیط توسعه خودکار:** فایل `dev.nix` تضمین می‌کند که هر توسعه‌دهنده‌ای با یک دستور، کل محیط توسعه را با تمام ابزارها و پیش‌نمایش‌های لازم به صورت آماده در اختیار دارد.
 
-**Status:** <span style="color: dodgerblue; font-weight: bold;">In Progress...</span>
+---
 
-### Action Plan:
+## ۴. نقشه راه پروژه (Project Roadmap)
 
-1.  **[✓] Update `blueprint.md`:** The project's master plan has been updated to reflect the new "Project Genesis" direction, architecture, and design philosophy.
+در اینجا مسیر توسعه را به فازهای مختلف تقسیم کرده و پیشرفت را دنبال می‌کنیم.
 
-2.  **[ ] Restructure for Routing:**
-    - **Action**: Create the directory structure (`pages/`) and initial files (`index.vue`, `new.vue`, etc.).
-    - **Action**: Modify `app.vue` to use `<NuxtPage />` to render the active page.
+### فاز ۱: برپایی و زیرساخت (Setup & Infrastructure)
+- [✅] راه‌اندازی اولیه پروژه Vue.js با Vite.
+- [✅] ساخت کامپوننت‌های اولیه UI (مانند `AdCard`, `AdList`, `Header`).
+- [✅] ساخت ساختار اولیه پروژه بک‌اند با Go و فریم‌ورک Gin.
+- [✅] ایجاد یک Endpoint آزمایشی (Mock API) در بک‌اند برای ارسال داده‌های نمونه.
+- [✅] پیکربندی کامل محیط توسعه در `dev.nix` برای پشتیبانی همزمان از Go و Node.js.
+- [✅] افزودن ابزارهای `air` (برای live-reload بک‌اند) و `docker` به محیط.
+- [✅] تعریف دو پیش‌نمایش (Preview) مجزا و خودکار برای فرانت‌اند و بک‌اند.
+- [✅] برقراری ارتباط موفقیت‌آمیز بین فرانت‌اند (Vue) و بک‌اند (Go) با استفاده از متغیرهای محیطی.
+- [✅] رفع تمام خطاهای مربوط به ساخت محیط (Build Errors) و رسیدن به یک محیط توسعه پایدار و کاملاً خودکار.
 
-3.  **[ ] Re-theme `BottomNav.vue`:**
-    - **Action**: Redesign the bottom navigation bar to align with the "Genesis Azure" theme (clean, dark, azure blue accent).
-    - **Action**: Convert its buttons to `<NuxtLink>` to enable client-side routing between pages.
+### فاز ۲: بک‌اند اصلی و پایگاه داده (Core Backend & Database)
+- [ ] انتخاب و راه‌اندازی پایگاه داده نهایی (PostgreSQL یا Firestore).
+- [ ] طراحی اسکیمای پایگاه داده (جداول/کالکشن‌ها برای `ads`, `users`, `categories`).
+- [ ] پیاده‌سازی کامل APIهای CRUD (Create, Read, Update, Delete) برای آگهی‌ها در Go.
+- [ ] پیاده‌سازی سیستم احراز هویت و مدیریت کاربران (ثبت‌نام، ورود، JWT).
+- [ ] اتصال بک‌اند به پایگاه داده واقعی و حذف داده‌های Mock.
+- [ ] نوشتن تست‌های واحد (Unit Tests) برای API Endpoints.
 
-4.  **[ ] Build `pages/index.vue`:**
-    - **Action**: Create a new `CategoryGrid.vue` component.
-    - **Action**: Assemble the home page using `SearchBar`, `CategoryGrid`, and `AdList`.
+### فاز ۳: توسعه کامل فرانت‌اند (Full Frontend Development)
+- [ ] اتصال کامل فرانت‌اند به APIهای واقعی بک‌اند.
+- [ ] ساخت صفحات مورد نیاز: صفحه جزئیات آگهی، صفحه ثبت/ویرایش آگهی، صفحات ورود و ثبت‌نام کاربر.
+- [ ] پیاده‌سازی مدیریت وضعیت (State Management) با **Pinia** برای مدیریت نشست کاربر (User Session) و داده‌های سراسری.
+- [ ] پیاده‌سازی قابلیت جستجو، فیلتر و دسته‌بندی آگهی‌ها.
+- [ ] نهایی‌سازی و بهبود طراحی UI/UX.
 
-5.  **[ ] Build Subsequent Pages:**
-    - **Action**: Sequentially build out the `new`, `chat`, and `account` pages with their required components.
+### فاز ۴: ویژگی‌های پیشرفته و بهینه‌سازی (Advanced Features & Optimization)
+- [ ] پیاده‌سازی قابلیت آپلود تصویر برای آگهی‌ها (مثلاً با استفاده از Firebase Storage).
+- [ ] افزودن ویژگی‌های Real-time (مانند چت بین کاربران) با استفاده از WebSockets یا Firestore Listeners.
+- [ ] بهینه‌سازی عملکرد فرانت‌اند (Lazy Loading کامپوننت‌ها و روت‌ها).
+- [ ] بهبود دسترسی‌پذیری (Accessibility - A11Y).
+
+### فاز ۵: استقرار و پروداکشن (Deployment & Production)
+- [ ] ساختن نسخه نهایی (Production Build) از اپلیکیشن Vue.js.
+- [ ] کانتینری کردن اپلیکیشن Go با استفاده از Docker.
+- [ ] راه‌اندازی یک پایپ‌لاین CI/CD (مثلاً با GitHub Actions).
+- [ ] استقرار فرانت‌اند در Firebase Hosting.
+- [ ] استقرار بک‌اند در یک سرویس مقیاس‌پذیر مانند Google Cloud Run.
