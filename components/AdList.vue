@@ -1,49 +1,65 @@
 
 <template>
-  <div :class="containerClasses">
-    <AdCard 
-      v-for="ad in ads" 
-      :key="ad.id" 
-      :ad="ad"
-      :view="view"
-    />
+  <div class="px-4 mt-6">
+    <!-- Header with View Toggle -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold text-white">آگهی‌های ویژه</h2>
+      <div class="flex items-center space-x-2 p-1 bg-metal-darker rounded-lg">
+        <button @click="viewMode = 'grid'" :class="['px-3 py-1 rounded-md transition-colors duration-300', viewMode === 'grid' ? 'bg-brand-purple text-white' : 'text-gray-400']">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+        </button>
+        <button @click="viewMode = 'list'" :class="['px-3 py-1 rounded-md transition-colors duration-300', viewMode === 'list' ? 'bg-brand-purple text-white' : 'text-gray-400']">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div v-if="loading" class="text-center py-10 text-white">
+      <p>در حال بارگذاری آگهی‌ها...</p>
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="error" class="text-center py-10 text-red-400">
+      <p>خطا در دریافت اطلاعات: {{ error.message }}</p>
+    </div>
+
+    <!-- Ads Container -->
+    <div v-else :class="[viewMode === 'grid' ? 'grid grid-cols-2 gap-4' : 'space-y-4']">
+      <AdCard 
+        v-for="ad in ads" 
+        :key="ad.id" 
+        :ad="ad" 
+        :view-mode="viewMode"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, defineProps } from 'vue';
+import { ref, onMounted } from 'vue';
 import AdCard from './AdCard.vue';
 
-// --- Props --- //
-const props = defineProps({
-  view: {
-    type: String,
-    default: 'grid',
-    validator: (value) => ['grid', 'list'].includes(value),
-  },
+const viewMode = ref('grid');
+const ads = ref([]);
+const loading = ref(true);
+const error = ref(null);
+
+// Fetch ads from the Go backend when the component is mounted
+onMounted(async () => {
+  try {
+    const response = await fetch('http://localhost:8080/api/v1/ads');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    ads.value = data;
+  } catch (e) {
+    error.value = e;
+    console.error("Failed to fetch ads:", e);
+  } finally {
+    loading.value = false;
+  }
 });
 
-// --- Computed Properties --- //
-const containerClasses = computed(() => [
-  'px-4 pb-28', // Padding bottom to clear the bottom nav
-  props.view === 'grid' 
-    ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10' // A more spacious grid
-    : 'flex flex-col gap-6' // A clean list with vertical spacing
-]);
-
-// --- Sample Data --- //
-const ads = ref([
-  { id: 1, title: 'گوشی آیفون ۱۳ پرو', price: '۳۵,۰۰۰,۰۰۰', location: 'تهران، زعفرانیه', time: 'لحظاتی پیش', image: 'https://images.unsplash.com/photo-1633713326906-8ac3b3785936?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80', isSpecial: true },
-  { id: 2, title: 'لپتاپ مک‌بوک ایر M2', price: '۴۵,۰۰۰,۰۰۰', location: 'کرج، عظیمیه', time: '۵ دقیقه پیش', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80', isSpecial: false },
-  { id: 3, title: 'دوربین سونی Alpha 7', price: '۶۰,۰۰۰,۰۰۰', location: 'اصفهان، مرداویج', time: '۱ ساعت پیش', image: 'https://images.unsplash.com/photo-1512790182537-535e67cca7a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80', isSpecial: true },
-  { id: 4, title: 'ست مبلمان چستر', price: '۱۲,۰۰۰,۰۰۰', location: 'شیراز، معالی‌آباد', time: '۳ ساعت پیش', image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80', isSpecial: false },
-  { id: 5, title: 'هدفون بی‌سیم Bose 700', price: '۸,۵۰۰,۰۰۰', location: 'مشهد، وکیل‌آباد', time: 'دیروز', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80', isSpecial: false },
-  { id: 6, title: 'ساعت هوشمند اپل واچ سری ۸', price: '۱۵,۰۰۰,۰۰۰', location: 'تهران، پونک', time: '۲ روز پیش', image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80', isSpecial: false },
-]);
-
 </script>
-
-<style scoped>
-/* All styling is now handled by Tailwind CSS classes for maximum flexibility. */
-/* The gap between items is adjusted based on the view mode for optimal layout. */
-</style>

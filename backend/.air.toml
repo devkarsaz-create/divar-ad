@@ -1,0 +1,33 @@
+
+# .air.toml
+# Config file for Air - https://github.com/cosmtrek/air
+
+# Working directory
+# . or absolute path, please note that the directories following must be relative to root.
+root = "."
+tmp_dir = "tmp"
+
+[build]
+# Just plain old shell command.
+cmd = "go build -o ./tmp/main ."
+# Binary file yields from `cmd`.
+bin = "tmp/main"
+# Customize binary file.
+full_bin = "APP_ENV=development APP_USER=air ./tmp/main"
+
+# Watch these filename extensions.
+include_ext = ["go", "tpl", "tmpl", "html"]
+# Ignore these filename extensions.
+exclude_dir = ["assets", "tmp", "vendor"]
+# It's not necessary to trigger build each time file changes if it's a static file.
+send_interrupt = true
+# Delay after file change
+delay = 1000 # ms
+
+[log]
+# Show log time
+time = true
+
+[misc]
+# Delete tmp directory on exit
+clean_on_exit = true

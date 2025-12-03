@@ -1,25 +1,27 @@
 
 <template>
-  <div class="relative min-h-screen bg-metal-dark">
-    <div class="noise-texture"></div>
-    
-    <!-- Main Content Area -->
-    <div class="relative z-10 pb-28"> 
-      <!-- Page Content -->
+  <div class="bg-metal-darkest min-h-screen font-sans">
+    <AppHeader />
+    <main class="pb-28">
       <NuxtPage />
-    </div>
-
-    <!-- Persistent Bottom Navigation -->
+    </main>
     <BottomNav />
   </div>
 </template>
 
 <script setup>
-// app.vue is now simplified. It only provides the main container with padding for the BottomNav,
-// the noise texture, and the NuxtPage component to render the current page.
-// The main header has been moved to individual pages for more control.
+// This is the main layout of our application.
+// <NuxtPage /> will render the content of our different pages based on the current URL.
 </script>
 
 <style>
-/* Global styles are in main.css */
+/* Global styles */
+body {
+  background-color: #1a1d22; /* bg-metal-darkest */
+  color: #e5e7eb; /* text-gray-200 */
+}
+
+.font-sans {
+  font-family: 'Vazirmatn', sans-serif;
+}
 </style>

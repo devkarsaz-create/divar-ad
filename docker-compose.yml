@@ -1,0 +1,29 @@
+
+version: '3.8'
+
+services:
+  # Frontend Service (Vue + Vite)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5173:5173" # Expose Vite's default port
+    volumes:
+      - .:/app # Mount current directory to /app in container
+      - /app/node_modules # Do not overwrite node_modules with local directory
+    command: npm run dev
+
+  # Backend Service (Go + Gin)
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080" # Expose Go's server port
+    volumes:
+      - ./backend:/app # Mount backend directory for live-reloading (with a Go watcher)
+
+networks:
+  default:
+    driver: bridge
+

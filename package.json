@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/algolia": "^1.11.2",
     "nuxt": "3.10.0",
     "vue": "latest",
     "vue-tilt.js": "^1.1.1"
