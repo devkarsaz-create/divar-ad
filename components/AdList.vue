@@ -16,12 +16,13 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-10 text-white">
-      <p>در حال بارگذاری آگهی‌ها...</p>
+      <p>در حال بارگذاری آگهی‌ها از سرور Go...</p>
     </div>
 
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-10 text-red-400">
       <p>خطا در دریافت اطلاعات: {{ error.message }}</p>
+      <p class="mt-2 text-sm text-gray-500">آیا سرور بک‌اند (Backend API) در حال اجرا است؟</p>
     </div>
 
     <!-- Ads Container -->
@@ -40,6 +41,9 @@
 import { ref, onMounted } from 'vue';
 import AdCard from './AdCard.vue';
 
+// آدرس پایه API از متغیرهای محیطی که توسط Vite و dev.nix تزریق شده، خوانده می‌شود.
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const viewMode = ref('grid');
 const ads = ref([]);
 const loading = ref(true);
@@ -47,10 +51,17 @@ const error = ref(null);
 
 // Fetch ads from the Go backend when the component is mounted
 onMounted(async () => {
+  if (!apiBaseUrl) {
+    console.error("VITE_API_BASE_URL is not set. Please check your dev.nix and vite configuration.");
+    error.value = new Error("پیکربندی آدرس API یافت نشد.");
+    loading.value = false;
+    return;
+  }
+
   try {
-    const response = await fetch('http://localhost:8080/api/v1/ads');
+    const response = await fetch(`${apiBaseUrl}/api/v1/ads`);
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`خطای شبکه: ${response.status}`);
     }
     const data = await response.json();
     ads.value = data;
