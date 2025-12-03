@@ -1,0 +1,36 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-metal-darkest: #0D0E12;
+  --color-metal-dark: #1C1F26;
+  --color-metal-light: #3F4452;
+  --color-brand-purple: #A162F7;
+}
+
+body {
+  /* Using the new darkest color for a true dark mode experience */
+  background-color: var(--color-metal-darkest);
+  color: #e2e8f0;
+  font-family: 'Vazirmatn', sans-serif;
+}
+
+/* Noise Texture - more subtle on the darker background */
+.noise-texture {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: -1;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"><g fill-opacity="0.4"><circle fill="%232d3748" cx="400" cy="400" r="600"/><circle fill="%234a5568" cx="400" cy="400" r="500"/><circle fill="%23718096" cx="400" cy="400" r="300"/><circle fill="%23a0aec0" cx="400" cy="400" r="200"/><circle fill="%23cbd5e0" cx="400" cy="400" r="100"/></g></svg>');
+}
+
+/* General Transition for interactive elements */
+button, a, input, [class*="hover:"] {
+  transition: all 0.25s ease-in-out;
+}

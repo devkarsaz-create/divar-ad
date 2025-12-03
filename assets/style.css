@@ -1,0 +1,32 @@
+/* --- GENERAL & ROOT STYLES --- */
+:root {
+  --background-color: #1a1a1a;
+  --surface-color: #2c2c2c;
+  --text-color: #f0f0f0;
+  --text-color-darker: #a0a0a0;
+  --border-color: rgba(255, 255, 255, 0.15);
+
+  /* Glow Colors */
+  --primary-glow-color: #00e5ff;
+  --secondary-glow-color: #7b2cbf;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  direction: rtl;
+  text-align: right;
+  overflow-x: hidden;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, p {
+  margin: 0;
+}
